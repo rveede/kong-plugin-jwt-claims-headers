@@ -59,13 +59,6 @@ function JwtClaimsHeadersHandler:access(conf)
 
   local claims = jwt.claims
 
-  kong.log.debug("lol1 test log")
-
-  for claim_key,claim_value in pairs(claims) do
-    kong.log.debug("k-"..claim_key)
-    kong.log.debug("v-"..claim_value)
-  end
-
   for claim_key,claim_value in pairs(claims) do
     for _,claim_pattern in pairs(conf.claims_to_include) do      
       if string.match(claim_key, "^"..claim_pattern.."$") then
