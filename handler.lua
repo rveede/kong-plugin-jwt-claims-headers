@@ -1,3 +1,4 @@
+local json = require('cjson')
 local BasePlugin = require "kong.plugins.base_plugin"
 local jwt_decoder = require "kong.plugins.jwt.jwt_parser"
 local req_set_header = ngx.req.set_header
@@ -57,10 +58,18 @@ function JwtClaimsHeadersHandler:access(conf)
   end
 
   local claims = jwt.claims
+
+  kong.log.debug("lol1 test log")
+
+  for claim_key,claim_value in pairs(claims) do
+    kong.log.debug("k-"..claim_key)
+    kong.log.debug("v-"..claim_value)
+  end
+
   for claim_key,claim_value in pairs(claims) do
     for _,claim_pattern in pairs(conf.claims_to_include) do      
       if string.match(claim_key, "^"..claim_pattern.."$") then
-        req_set_header("X-"..claim_key, claim_value)
+        req_set_header("X-"..claim_key:gsub(":","-"), claim_value)
       end
     end
   end
