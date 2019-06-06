@@ -59,9 +59,9 @@ function JwtClaimsHeadersHandler:access(conf)
   local claims = jwt.claims
 
   for claim_key,claim_value in pairs(claims) do
-    for _,claim_pattern in pairs(conf.claims_to_include) do      
+    for _,claim_pattern in pairs(conf.claims_to_include) do
       if string.match(claim_key, "^"..claim_pattern.."$") then
-        req_set_header("x-security-"..claim_key:gsub(":","-"), claim_value)
+        req_set_header("x-security-"..claim_key:gsub(":","-"):gsub("_","-"), claim_value)
       end
     end
   end
