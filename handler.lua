@@ -62,7 +62,7 @@ function JwtClaimsHeadersHandler:access(conf)
     for _,claim_pattern in pairs(conf.claims_to_include) do
       if string.match(claim_key, "^"..claim_pattern.."$") then
         if "table" == type(claim_value) then
-          claim_value = table.print(claim_value)
+          claim_value = table.concat(claim_value,",")
         end
         req_set_header("x-security-"..claim_key:gsub(":","-"):gsub("_","-"), claim_value)
       end
